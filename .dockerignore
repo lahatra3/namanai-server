@@ -1,0 +1,8 @@
+/node_modules
+/bin
+/build
+/dist
+.env
+.env.template
+README.md
+/deployment
