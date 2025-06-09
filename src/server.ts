@@ -9,6 +9,8 @@ const server = serve({
     reusePort: true,
 
     async fetch(req) {
+        console.log(`${new Date().toLocaleString()} : HTTP ${req.method}...`);
+        
         const headers = new Headers();
         headers.set("Access-Control-Allow-Origin", "*");
         headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -18,13 +20,13 @@ const server = serve({
             return new Response(null, { headers });
         }
 
+        if (req.method !== "POST") {
+            return new Response("method not allowed ...", { status: 405 });
+        }
+
         const { prompt, model }: RequestBodyModel = await req.json() as RequestBodyModel;
         if (!prompt) {
             return new Response("Prompt not found ...", { status: 406 });
-        }
-
-        if (req.method !== "POST") {
-            return new Response("method not allowed ...", { status: 405 });
         }
 
         const namanai = new Namanai();
